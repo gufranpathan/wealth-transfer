@@ -22,9 +22,6 @@ Arguments:
 ```
 '-d' (or '--dhs_path'): Path of the dhs_final_labels.csv
 '-c' (or '--countries_train'): Countries to train the data on, pipe-separated. E.g. "IA|NP|PK
-
-parser.add_argument('-c','--countries_train', default="IA|NP|PK",help="Countries to train the data on")
-
 ```
 # Directories
 ## Training Data
