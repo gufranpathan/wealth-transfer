@@ -8,7 +8,7 @@ from keras.models import Model
 from tensorflow.keras.applications import VGG16
 
 import os, tempfile
-
+from types import SimpleNamespace
 
 # NOTE: Function comes from the following link: https://sthalles.github.io/keras-regularizer/
 def add_regularization(model, regularizer=tf.keras.regularizers.l2(1e-5)):
@@ -87,7 +87,7 @@ def get_compiled_model(input_shape, fine_tune=0, reg_amount=None):
 class Trainer():
     def __init__(self,data_loader=None,model_hyperparams=None):
         self.data_loader = data_loader
-        self.model_hyperparams = model_hyperparams
+        self.model_hyperparams = SimpleNamespace(**model_hyperparams)
 
         self.n_train_imgs = len(self.data_loader.train_paths)
         self.n_val_imgs = len(self.data_loader.val_paths)

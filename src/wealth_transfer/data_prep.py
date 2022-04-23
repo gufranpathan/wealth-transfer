@@ -53,7 +53,7 @@ def load_images(img_path, label):
 
     return (img, label)
 
-def get_tf_dataset(self,paths, labels):
+def get_tf_dataset(paths, labels):
     tfds = tf.data.Dataset.from_tensor_slices((paths, labels))
     dataset = tfds.map(lambda path, label: tf.numpy_function(load_images, [path, label], (tf.float32, tf.float32)))
 
@@ -72,22 +72,6 @@ class DataLoader():
         self.min_max_labels = min_max_labels
 
     # Creates image file path column out of existing dataframe variables:
-    def get_path_col(df, path_beginning=None, full_path=None):
-        df = df.copy(deep=True)
-
-        df['survey'] = df['DHSID_EA'].str[:10]
-        df['cc'] = df['DHSID_EA'].str[:2]
-
-        # Bangladesh file path is simpler, so we don't need survey column in path:
-        if full_path != None:
-            df['path'] = full_path + '/' + df['DHSID_EA'] + '.npz'
-
-        # India path
-        else:
-            df['path'] = path_beginning + '/' + df['survey'] + '/' + df['DHSID_EA'] + '.npz'
-
-        return df
-
     def read_dhs(self):
         self.df = pd.read_csv(self.dhs_path)
 
@@ -103,7 +87,7 @@ class DataLoader():
         # Get path (load_paths_labels)
         self.df['survey'] = self.df['DHSID_EA'].str[:10]
         self.df['cc'] = self.df['DHSID_EA'].str[:2]
-        self.df['path'] = self.df.group_path + '/' + self.df['survey'] + '/' + self.df['DHSID_EA'] + '.npz'
+        self.df['path'] = self.data_dir + os.sep + self.df.group_path + os.sep + self.df['survey'] + os.sep + self.df['DHSID_EA'] + '.npz'
 
     def subset_countries(self):
         self.df = self.df[self.df.country.isin(self.countries_train.split("|"))]
@@ -147,6 +131,7 @@ class DataLoader():
     def run(self):
         self.read_dhs()
         self.subset_countries()
+        self.get_paths_labels()
         self.get_train_test_val()
-        print(self.df.country.unique())
+        
 

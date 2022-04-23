@@ -14,7 +14,7 @@ pipenv shell
 
 Run
 ```
-python -m wealth_transfer --countries_train IA|PK
+python -m wealth_transfer --countries_train "IA|PK"
 ```
 
 Arguments:
